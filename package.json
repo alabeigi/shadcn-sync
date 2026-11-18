@@ -1,0 +1,33 @@
+{
+  "name": "shadcn-sync",
+  "version": "0.1.0",
+  "description": "Apply upstream shadcn/ui updates with a three-way merge.",
+  "type": "module",
+  "license": "UNLICENSED",
+  "bin": {
+    "shadcn-sync": "./dist/cli.js"
+  },
+  "files": ["dist"],
+  "engines": {
+    "node": ">=20.18.1"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "npm run build && node --test",
+    "prepack": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alabeigi/shadcn-sync.git"
+  },
+  "homepage": "https://github.com/alabeigi/shadcn-sync#readme",
+  "bugs": "https://github.com/alabeigi/shadcn-sync/issues",
+  "keywords": ["shadcn", "shadcn-ui", "cli", "three-way-merge"],
+  "dependencies": {
+    "shadcn": "4.23.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.5",
+    "typescript": "5.9.3"
+  }
+}
