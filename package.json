@@ -1,6 +1,6 @@
 {
   "name": "shadcn-sync",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Update customized shadcn/ui components with a three-way Git merge.",
   "type": "module",
   "license": "MIT",
