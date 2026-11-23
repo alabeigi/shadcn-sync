@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Apply upstream shadcn/ui updates with a three-way merge.",
   "type": "module",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "bin": {
     "shadcn-sync": "./dist/cli.js"
   },
