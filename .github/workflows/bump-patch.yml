@@ -1,0 +1,49 @@
+name: Bump patch version
+
+"on":
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: bump-patch-main
+  queue: max
+
+jobs:
+  bump:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+      - name: Test
+        run: |
+          npm ci
+          npm test
+      - name: Commit and push the patch version
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          marker="Version-Bump-Run: ${GITHUB_RUN_ID}"
+          if git log -1 --format=%H --fixed-strings --grep="$marker" | grep -q .; then
+            exit 0
+          fi
+
+          version=$(npm version patch --no-git-tag-version --ignore-scripts)
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add package.json package-lock.json
+          git commit -m "chore: bump version to $version" -m "$marker"
+
+          export GIT_CONFIG_COUNT=1
+          export GIT_CONFIG_KEY_0=http.https://github.com/.extraheader
+          export GIT_CONFIG_VALUE_0="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w 0)"
+          git push origin HEAD:refs/heads/main
