@@ -1,8 +1,10 @@
 # shadcn-sync
 
-Update a customized shadcn/ui component with a three-way Git merge.
+Update customized shadcn/ui components with a three-way Git merge. The CLI merges your local edits with the latest registry version using the original component as the merge base.
 
-Run the commands from an initialized shadcn project. Requires Node.js 20.18.1 or newer and Git.
+## Quick start
+
+Run these commands from an initialized shadcn/ui project. You'll need Git and Node.js 20.18.1 or newer. `npx` runs the CLI without a global install.
 
 ```sh
 npx shadcn-sync add dialog
@@ -10,15 +12,23 @@ npx shadcn-sync update dialog --dry-run
 npx shadcn-sync update dialog
 ```
 
-`add` calls the official shadcn CLI and records the original component in `.shadcn-sync/`. Commit that directory with your project. `update` merges the saved source, your current file, and the latest source generated for your project's shadcn settings. A conflict exits with status 1 and prints the conflicted merge for review.
+1. `add` installs the component with the official shadcn CLI and saves the original in `.shadcn-sync/`. Commit that directory with your project.
+2. Customize the component in your project. Run `update --dry-run` to preview the merge.
+3. Run `update` to apply the merge. If Git finds a conflict, the CLI prints the conflicted merge and exits with status 1.
 
-To track a component you already customized, pass the Git commit containing the untouched installation, including any component files installed alongside it.
+## Track an existing component
+
+If you've already customized a component, use the Git commit that contains the untouched installation and its companion files:
 
 ```sh
 npx shadcn-sync track dialog --from <install-commit>
 ```
 
-This release tracks one same-named JSX or TSX file per official registry item. If an upstream change also requires changes to other generated files, review the update with `npx shadcn add dialog --dry-run`. Dependencies required by an update must already be declared in the project.
+Commit the resulting `.shadcn-sync/` directory, then use the same update commands as above.
+
+## Scope
+
+Each tracked official registry item covers one same-named JSX or TSX file. If an upstream update also changes companion files, review them with `npx shadcn add dialog --dry-run`. Your project must already declare any dependencies needed by the updated component.
 
 ## Development
 
@@ -27,3 +37,7 @@ npm ci
 npm test
 npm pack --dry-run
 ```
+
+## License
+
+MIT. See [LICENSE](https://github.com/alabeigi/shadcn-sync/blob/main/LICENSE).
